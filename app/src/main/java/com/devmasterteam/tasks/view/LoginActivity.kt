@@ -35,24 +35,23 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if(v.id == R.id.button_login) {
-           handleLogin()
+        if (v.id == R.id.button_login) {
+            handleLogin()
         }
     }
 
     private fun observe() {
-        viewModel.success.observe(this, Observer {
-            if(it) {
+        viewModel.login.observe(this) {
+            if (it.status()) {
                 startActivity(Intent(applicationContext, MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(applicationContext, it.message(), Toast.LENGTH_SHORT).show()
             }
-        })
-
-        viewModel.failLogin.observe(this, Observer {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-        })
+        }
     }
 
-    private fun handleLogin(){
+    private fun handleLogin() {
         val email = binding.editEmail.text.toString()
         val password = binding.editPassword.text.toString()
 

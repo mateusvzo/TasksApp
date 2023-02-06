@@ -7,30 +7,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.devmasterteam.tasks.service.listener.APIListener
 import com.devmasterteam.tasks.service.model.PersonModel
+import com.devmasterteam.tasks.service.model.ValidationModel
 import com.devmasterteam.tasks.service.repository.PersonRepository
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = PersonRepository(application.applicationContext)
 
-    private val _success = MutableLiveData<Boolean>()
-    val success: LiveData<Boolean> = _success
+    private val _login = MutableLiveData<ValidationModel>()
+    val login: LiveData<ValidationModel> = _login
 
-    private val _failLogin = MutableLiveData<String>()
-    val failLogin: LiveData<String> = _failLogin
     /**
      * Faz login usando API
      */
     fun doLogin(email: String, password: String) {
-        repository.login(email, password, object : APIListener<PersonModel>{
+        repository.login(email, password, object : APIListener<PersonModel> {
             override fun onSuccess(result: PersonModel) {
-                if(result != null) {
-                    _success.value = true
-                }
+                _login.value = ValidationModel()
             }
 
             override fun onFailure(message: String) {
-                _failLogin.value = message
+                _login.value = ValidationModel(message)
             }
 
         })
