@@ -12,9 +12,9 @@ class PriorityRepository(val context: Context) {
 
     private val remote = RetrofitClient.createService(PriorityService::class.java)
 
-    fun getPriority(): Call<List<PriorityModel>> {
+    fun getPriority() {
         val call = remote.getPriority()
-        call.enqueue(object : Callback<List<PriorityModel>>{
+        call.enqueue(object : Callback<List<PriorityModel>> {
             override fun onResponse(
                 call: Call<List<PriorityModel>>,
                 response: Response<List<PriorityModel>>
