@@ -1,10 +1,13 @@
 package com.devmasterteam.tasks.service.repository.local
 
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.DeleteTable
 import androidx.room.Insert
 import androidx.room.Query
 import com.devmasterteam.tasks.service.model.PriorityModel
 
-
+@Dao
 interface PriorityDAO {
 
     @Insert
@@ -12,4 +15,7 @@ interface PriorityDAO {
 
     @Query("SELECT * FROM Priority")
     fun list(): List<PriorityModel>
+
+    @Query("DELETE FROM Priority")
+    fun clear()
 }

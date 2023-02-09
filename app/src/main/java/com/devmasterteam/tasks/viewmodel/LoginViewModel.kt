@@ -63,7 +63,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         _loggedUser.value = logged
 
         if(!logged) {
-            var list = repositoryPriority.getPriority()
+            repositoryPriority.getPriority(object : APIListener<List<PriorityModel>>{
+                override fun onSuccess(result: List<PriorityModel>) {
+                    repositoryPriority.save(result)
+                }
+
+                override fun onFailure(message: String) {
+                    val s = ""
+                }
+
+            })
         }
 
     }
