@@ -81,9 +81,9 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
 
             val index = binding.spinnerPriority.selectedItemPosition
             this.priorityId = listPriority[index].id
-
-            viewModel.save()
         }
+
+        viewModel.save(task)
     }
 
     private fun handleDate() {
