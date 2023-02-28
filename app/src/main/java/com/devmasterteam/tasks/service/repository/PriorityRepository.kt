@@ -39,7 +39,7 @@ class PriorityRepository(val context: Context) {
     }
 
     fun getPriority(): List<PriorityModel> {
-        return db.list()
+            return db.list()
     }
 
     fun save(list: List<PriorityModel>) {
