@@ -19,7 +19,7 @@ class TaskRepository {
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 if ( response.code() == TaskConstants.HTTP.SUCCESS) {
-
+                    response.body()?.let { listener.onSuccess(it) }
                 } else {
                     listener.onFailure(failResponse(response.errorBody()!!.string()))
                 }
