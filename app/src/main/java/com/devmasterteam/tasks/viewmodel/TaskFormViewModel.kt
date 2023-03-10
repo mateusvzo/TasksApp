@@ -15,7 +15,7 @@ import com.devmasterteam.tasks.service.repository.TaskRepository
 class TaskFormViewModel(application: Application) : AndroidViewModel(application) {
 
     private val priorityRepository = PriorityRepository(application.applicationContext)
-    private val taskRepository = TaskRepository()
+    private val taskRepository = TaskRepository(application.applicationContext)
 
     private val _priority = MutableLiveData<List<PriorityModel>>()
     val priority: LiveData<List<PriorityModel>> = _priority
@@ -28,7 +28,6 @@ class TaskFormViewModel(application: Application) : AndroidViewModel(application
             override fun onSuccess(result: Boolean) {
                 _task.value = ValidationModel()
             }
-
             override fun onFailure(message: String) {
                 _task.value = ValidationModel(message)
             }

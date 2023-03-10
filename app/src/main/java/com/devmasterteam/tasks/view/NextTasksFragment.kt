@@ -24,8 +24,8 @@ class NextTasksFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textGallery
-        viewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        viewModel.tasks.observe(viewLifecycleOwner, Observer {
+            textView.text = it.toString()
         })
         return root
     }

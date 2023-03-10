@@ -11,7 +11,7 @@ import com.devmasterteam.tasks.service.repository.TaskRepository
 
 class TaskListViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val taskRepository = TaskRepository()
+    private val taskRepository = TaskRepository(application.applicationContext)
 
     private val _tasks = MutableLiveData<List<TaskModel>>()
     val tasks: LiveData<List<TaskModel>> = _tasks
