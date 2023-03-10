@@ -30,7 +30,7 @@ interface TaskService {
         @Field("PriorityId") priorityId: Int,
         @Field("Description") description: String,
         @Field("DueDate") dueDate: String,
-        @Field("PriorityId") complete: Boolean,
+        @Field("Complete") complete: Boolean,
     ): Call<Boolean>
 
     @PUT("Task")
@@ -40,7 +40,7 @@ interface TaskService {
         @Field("PriorityId") priorityId: Int,
         @Field("Description") description: String,
         @Field("DueDate") dueDate: String,
-        @Field("PriorityId") complete: Boolean,
+        @Field("Complete") complete: Boolean,
     ): Call<Boolean>
 
     @PUT("Task/Complete")
