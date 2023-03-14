@@ -40,7 +40,6 @@ class AllTasksFragment : Fragment() {
             }
 
             override fun onCompleteClick(id: Int) {
-
             }
 
             override fun onUndoClick(id: Int) {

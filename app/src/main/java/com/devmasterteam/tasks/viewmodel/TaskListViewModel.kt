@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.devmasterteam.tasks.R
 import com.devmasterteam.tasks.service.listener.APIListener
 import com.devmasterteam.tasks.service.model.TaskModel
 import com.devmasterteam.tasks.service.model.ValidationModel
@@ -30,7 +31,6 @@ class TaskListViewModel(application: Application) : AndroidViewModel(application
                 }
                 _tasks.value = result
             }
-
             override fun onFailure(message: String) {
                 val s = ""
             }
