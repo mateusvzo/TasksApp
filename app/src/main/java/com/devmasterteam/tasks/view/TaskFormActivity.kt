@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.devmasterteam.tasks.R
 import com.devmasterteam.tasks.databinding.ActivityRegisterBinding
 import com.devmasterteam.tasks.databinding.ActivityTaskFormBinding
+import com.devmasterteam.tasks.service.constants.TaskConstants
 import com.devmasterteam.tasks.service.model.PriorityModel
 import com.devmasterteam.tasks.service.model.TaskModel
 import com.devmasterteam.tasks.viewmodel.RegisterViewModel
@@ -34,6 +35,8 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         binding = ActivityTaskFormBinding.inflate(layoutInflater)
 
         viewModel.loadPriority()
+
+        loadDataFromActivity()
 
         observer()
 
@@ -61,6 +64,14 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         binding.buttonDate.text = dueDate
     }
 
+    private fun loadDataFromActivity() {
+        val bundle = intent.extras
+        if (bundle != null) {
+            val taskId = bundle.getInt(TaskConstants.BUNDLE.TASKID)
+            viewModel.load(taskId)
+        }
+    }
+
     private fun observer() {
         viewModel.priority.observe(this) {
             listPriority = it
@@ -71,13 +82,24 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, list)
             binding.spinnerPriority.adapter = adapter
         }
-
         viewModel.task.observe(this) {
             if (it.status()) {
                 toast("Sucesso")
                 finish()
             } else {
                 toast(it.message())
+            }
+        }
+        viewModel.taskEdit.observe(this) {
+            binding.editDescription.setText(it.description)
+            //binding.spinnerPriority.setSelection()
+            binding.checkComplete.isChecked = it.complete
+            binding.buttonDate.text = it.dueDate
+        }
+        viewModel.taskLoad.observe(this) {
+            if (!it.status()) {
+                toast(it.message())
+                finish()
             }
         }
     }

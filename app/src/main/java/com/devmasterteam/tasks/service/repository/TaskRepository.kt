@@ -30,6 +30,10 @@ class TaskRepository(context: Context) : BaseRepository(context) {
         executeCall(call, listener)
     }
 
+    fun load(id: Int, listener: APIListener<TaskModel>) {
+        executeCall(remote.load(id), listener)
+    }
+
     fun onComplete(id: Int, listener: APIListener<Boolean>) {
         executeCall(remote.complete(id), listener)
     }
