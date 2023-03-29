@@ -15,14 +15,14 @@ import com.devmasterteam.tasks.service.model.PriorityModel
 import com.devmasterteam.tasks.service.model.TaskModel
 import com.devmasterteam.tasks.viewmodel.TaskFormViewModel
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 
 class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
     DatePickerDialog.OnDateSetListener {
 
     private lateinit var viewModel: TaskFormViewModel
     private lateinit var binding: ActivityTaskFormBinding
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private var listPriority: List<PriorityModel> = mutableListOf()
     private var taskIdentification = 0
 
@@ -108,8 +108,10 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
             binding.editDescription.setText(it.description)
             binding.spinnerPriority.setSelection(getIndex(it.priorityId))
             binding.checkComplete.isChecked = it.complete
-            val date = SimpleDateFormat("yyyy-MM-dd").parse(it.dueDate)
-            binding.buttonDate.text = dateFormat.format(date)
+            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.dueDate)
+            if(date != null) {
+                binding.buttonDate.text = dateFormat.format(date)
+            }
         }
         viewModel.taskLoad.observe(this) {
             if (!it.status()) {
