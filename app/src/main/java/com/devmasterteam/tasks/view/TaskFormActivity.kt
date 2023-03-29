@@ -9,12 +9,10 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.devmasterteam.tasks.R
-import com.devmasterteam.tasks.databinding.ActivityRegisterBinding
 import com.devmasterteam.tasks.databinding.ActivityTaskFormBinding
 import com.devmasterteam.tasks.service.constants.TaskConstants
 import com.devmasterteam.tasks.service.model.PriorityModel
 import com.devmasterteam.tasks.service.model.TaskModel
-import com.devmasterteam.tasks.viewmodel.RegisterViewModel
 import com.devmasterteam.tasks.viewmodel.TaskFormViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -32,7 +30,7 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         super.onCreate(savedInstanceState)
 
         // Variáveis da classe
-        viewModel = ViewModelProvider(this).get(TaskFormViewModel::class.java)
+        viewModel = ViewModelProvider(this)[TaskFormViewModel::class.java]
         binding = ActivityTaskFormBinding.inflate(layoutInflater)
 
         viewModel.loadPriority()
