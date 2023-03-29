@@ -1,7 +1,6 @@
 package com.devmasterteam.tasks.viewmodel
 
 import android.app.Application
-import android.text.BoringLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,7 +29,7 @@ class TaskFormViewModel(application: Application) : AndroidViewModel(application
     val taskLoad: LiveData<ValidationModel> = _taskLoad
 
     fun save(task: TaskModel) {
-        taskRepository.create(task, object : APIListener<Boolean> {
+        val listener = object : APIListener<Boolean> {
             override fun onSuccess(result: Boolean) {
                 _task.value = ValidationModel()
             }
@@ -39,7 +38,12 @@ class TaskFormViewModel(application: Application) : AndroidViewModel(application
                 _task.value = ValidationModel(message)
             }
 
-        })
+        }
+        if(task.id == 0) {
+            taskRepository.create(task, listener)
+        } else {
+            taskRepository.update(task, listener)
+        }
     }
 
     fun load(id: Int) {

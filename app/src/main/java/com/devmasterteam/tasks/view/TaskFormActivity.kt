@@ -26,6 +26,7 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
     private lateinit var binding: ActivityTaskFormBinding
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
     private var listPriority: List<PriorityModel> = mutableListOf()
+    private var taskIdentification = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +68,20 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
     private fun loadDataFromActivity() {
         val bundle = intent.extras
         if (bundle != null) {
-            val taskId = bundle.getInt(TaskConstants.BUNDLE.TASKID)
-            viewModel.load(taskId)
+            taskIdentification = bundle.getInt(TaskConstants.BUNDLE.TASKID)
+            viewModel.load(taskIdentification)
         }
+    }
+
+    private fun getIndex(id: Int): Int {
+        var index = 0
+        for (l in listPriority) {
+            if (l.id == id) {
+                break
+            }
+            index++
+        }
+        return index
     }
 
     private fun observer() {
@@ -84,7 +96,11 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         }
         viewModel.task.observe(this) {
             if (it.status()) {
-                toast("Sucesso")
+                if (taskIdentification == 0) {
+                    toast("Tarefa criada com sucesso.")
+                } else {
+                    toast("Tarefa atualizada com sucesso.")
+                }
                 finish()
             } else {
                 toast(it.message())
@@ -92,9 +108,10 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         }
         viewModel.taskEdit.observe(this) {
             binding.editDescription.setText(it.description)
-            //binding.spinnerPriority.setSelection()
+            binding.spinnerPriority.setSelection(getIndex(it.priorityId))
             binding.checkComplete.isChecked = it.complete
-            binding.buttonDate.text = it.dueDate
+            val date = SimpleDateFormat("yyyy-MM-dd").parse(it.dueDate)
+            binding.buttonDate.text = dateFormat.format(date)
         }
         viewModel.taskLoad.observe(this) {
             if (!it.status()) {
@@ -106,7 +123,7 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun handleSave() {
         val task = TaskModel().apply {
-            this.id = 0
+            this.id = taskIdentification
             this.description = binding.editDescription.text.toString()
             this.complete = binding.checkComplete.isChecked
             this.dueDate = binding.buttonDate.text.toString()
